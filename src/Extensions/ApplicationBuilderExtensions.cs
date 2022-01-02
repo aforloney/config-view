@@ -1,9 +1,9 @@
 using System.Text.Json;
-using Confv.Config;
+using ConfigView.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace Confv.Extensions
+namespace ConfigView.Extensions
 {
     public static class ApplicationBuilderExtensions
     {

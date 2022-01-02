@@ -1,4 +1,4 @@
-namespace Confv.Config 
+namespace ConfigView.Config
 {
     internal interface IConfigViewer
     {

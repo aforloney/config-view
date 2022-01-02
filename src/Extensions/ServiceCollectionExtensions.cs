@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
-using Confv.Config;
+using ConfigView.Config;
 
-namespace Confv.Extensions
+namespace ConfigView.Extensions
 {
     public static class ServiceCollectionExtensions
     {        

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace Confv.Config
+namespace ConfigView.Config
 {
     internal class ConfigViewer : IConfigViewer
     {
