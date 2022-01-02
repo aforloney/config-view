@@ -17,7 +17,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore src/ConfigView.csproj
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build src/ConfigView.csproj --configuration Release --no-restore
     - name: Publish ConfigView
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
