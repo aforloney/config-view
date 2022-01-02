@@ -15,10 +15,10 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore src/ConfigView.csproj
     - name: Build
       run: dotnet build --configuration Release --no-restore
-    - name: Publish FluentEmail.Core
+    - name: Publish ConfigView
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
           PROJECT_FILE_PATH: src/ConfigView.csproj
