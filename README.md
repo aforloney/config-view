@@ -8,6 +8,16 @@ This was inspired off of an extenstion method on `IConfigurationRoot` exposed by
 
 However, the extension method returned the contents as a `string` and required manual work to expose the contents behind an endpoint. This aims to workaorund that.
 
+## Usage
+
+The purpose of the repository was to be able to leverage easily viewing the contents of your configuration with the following lines,
+
+``` C#
+app.AddConfigEndpoint();
+...
+services.AddConfigEndpoint();
+```
+
 ## Notes
 
 This is not meant to be Production facing in it's current state and future support will only
