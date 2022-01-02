@@ -8,9 +8,9 @@ namespace Confv.Config
 
         public ConfigViewer(IConfiguration configuration)
         {
-            _configurationRoot = configuration as ConfigurationRoot ?? new ConfigurationBuilder().Build();
+            _configurationRoot = configuration as IConfigurationRoot ?? new ConfigurationBuilder().Build();
         }
-        
+
         public IEnumerable<ConfigView> Get()
         {
             return GetContents(_configurationRoot);
@@ -25,18 +25,15 @@ namespace Confv.Config
                 foreach (IConfigurationSection child in children)
                 {
                     var valueAndProvider = GetValueAndProvider(root, child.Path);
-                    config = config with { Key = child.Key, Path = child.Path };
-                    if (valueAndProvider.Provider != null)
+                    config = config with { Key = child.Key };
+                    if (valueAndProvider.Source != null)
                     {
-                        config = config with { Value = valueAndProvider };
+                        config = config with { ProviderDetails = valueAndProvider };
                         configs.Add(config);
                     }
                     else
                     {
-                        config = config with
-                        {
-                            Path = config.Key + (!string.IsNullOrEmpty(config.Key) ? ":" : string.Empty) + child.Key
-                        };
+                        config = config with { Path = child.Path };
                     }
 
                     RecurseChildren(configs, config, child.GetChildren());
@@ -51,16 +48,16 @@ namespace Confv.Config
             return conigfData;
         }
 
-        private static ProviderValue GetValueAndProvider(
+        private static Provider GetValueAndProvider(
             IConfigurationRoot root,
             string key)
         {
-            var providerValue = new ProviderValue();
+            var providerValue = new Provider();
             foreach (IConfigurationProvider provider in root.Providers.Reverse())
             {
                 if (provider.TryGet(key, out string value))
                 {
-                    return new ProviderValue { Value = value, Provider = provider };
+                    return new Provider { Source = provider.ToString(), Value = value };
                 }
             }
 
