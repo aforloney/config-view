@@ -12,3 +12,4 @@ However, the extension method returned the contents as a `string` and required m
 
 This is not meant to be Production facing in it's current state and future support will only
 add the extension for non-Production environments.
+
