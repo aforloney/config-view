@@ -51,7 +51,7 @@ namespace ConfigView.Tests
         }
 
         [Fact]
-        public void When_MultipleNestedConfigurationSupplied_Then_Contents_Returned()
+        public void When_JsonStreamSingleNestedConfigurationSupplied_Then_Contents_Returned()
         {
             // Arrange
             var jsonString = @"{""KeyRoot"":{""InnerKey"":""Value1""}}";
@@ -71,7 +71,7 @@ namespace ConfigView.Tests
         }
 
         [Fact]
-        public void When_MultipleSimpleConfigurationsSupplied_Then_Contents_Returned()
+        public void When_JsonStreamMultipleConfigurationsSupplied_Then_Contents_Returned()
         {
             // Arrange
             var jsonString = @"{""KeyRoot"":{""InnerKey"":""Value1""},""OtherKey"":""Value2""}";
@@ -96,7 +96,7 @@ namespace ConfigView.Tests
         }
 
         [Fact]
-        public void When_MultipleConfigurationsSuppliedMixed_Then_Contents_Returned()
+        public void When_JsonStreamMultipleMixedConfigurationsSupplied_Then_Contents_Returned()
         {
             // Arrange
             var jsonString = @"{""Root"":""Value0"",""KeyRoot"":{""InnerKey"":""Value1""},""OtherKey"":""Value2""}";
