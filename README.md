@@ -14,6 +14,7 @@ However, the extension method returned the contents as a `string` and required m
 
 The purpose of the repository was to be able to leverage easily viewing the contents of your configuration with the following lines,
 
+### ASP.NET Core 5
 ``` C#
 app.AddConfigEndpoint();
 
@@ -21,6 +22,16 @@ app.AddConfigEndpoint();
 
 services.AddConfigEndpoint();
 ```
+
+### ASP.NET Core 6
+``` C#
+app.AddConfigEndpoint(builder); // where Builder is of WebApplicationBuilder
+
+...
+
+services.AddConfigEndpoint();
+```
+
 
 ## Notes
 
