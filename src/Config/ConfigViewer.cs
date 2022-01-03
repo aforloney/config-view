@@ -1,5 +1,7 @@
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Configuration;
 
+[assembly: InternalsVisibleTo("ConfigView.Tests")]
 namespace ConfigView.Config
 {
     internal class ConfigViewer : IConfigViewer
@@ -25,15 +27,11 @@ namespace ConfigView.Config
                 foreach (IConfigurationSection child in children)
                 {
                     var valueAndProvider = GetValueAndProvider(root, child.Path);
-                    config = config with { Key = child.Key };
+                    config = config with { Key = child.Key, Path = child.Path };
                     if (valueAndProvider.Source != null)
                     {
                         config = config with { ProviderDetails = valueAndProvider };
                         configs.Add(config);
-                    }
-                    else
-                    {
-                        config = config with { Path = child.Path };
                     }
 
                     RecurseChildren(configs, config, child.GetChildren());

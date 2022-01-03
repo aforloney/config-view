@@ -1,5 +1,6 @@
-using Microsoft.Extensions.Configuration;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("ConfigView.Tests")]
 namespace ConfigView.Config
 {
     internal record ConfigView(string Key, string Path, Provider ProviderDetails)
