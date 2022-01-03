@@ -15,18 +15,13 @@ namespace ConfigView.Config
 
         public IEnumerable<ConfigView> Get()
         {
-            return GetContents(_configurationRoot);
-        }
-
-        private IEnumerable<ConfigView> GetContents(IConfigurationRoot root)
-        {
             void RecurseChildren(IList<ConfigView> configs,
                 ConfigView config,
                 IEnumerable<IConfigurationSection> children)
             {
                 foreach (IConfigurationSection child in children)
                 {
-                    var valueAndProvider = GetValueAndProvider(root, child.Path);
+                    var valueAndProvider = GetValueAndProvider(_configurationRoot, child.Path);
                     config = config with { Key = child.Key, Path = child.Path };
                     if (valueAndProvider.Source != null)
                     {
@@ -41,7 +36,7 @@ namespace ConfigView.Config
             List<ConfigView> conigfData = new();
             ConfigView currentConfig = new();
 
-            RecurseChildren(conigfData, currentConfig, root.GetChildren());
+            RecurseChildren(conigfData, currentConfig, _configurationRoot.GetChildren());
 
             return conigfData;
         }
