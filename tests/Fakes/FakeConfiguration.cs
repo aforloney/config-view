@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
@@ -8,7 +9,7 @@ namespace ConfigView.Tests.Fakes
 {
     public class FakeConfiguration : IConfiguration
     {
-        private IEnumerable<IConfigurationSection> Sections { get; set; }
+        private IEnumerable<IConfigurationSection> Sections { get; set; } = Enumerable.Empty<IConfigurationSection>();
         public IEnumerable<IConfigurationSection> GetChildren() => Sections;
 
         # region Not needed implementations
