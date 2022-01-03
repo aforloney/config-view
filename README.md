@@ -16,7 +16,11 @@ The purpose of the repository was to be able to leverage easily viewing the cont
 
 ### ASP.NET Core 5
 ``` C#
-app.AddConfigEndpoint();
+if (app.Environment.IsDevelopment())
+{
+    app.AddConfigEndpoint();
+    ...
+}
 
 ...
 
@@ -25,7 +29,11 @@ services.AddConfigEndpoint();
 
 ### ASP.NET Core 6
 ``` C#
-app.AddConfigEndpoint(builder); // where Builder is of WebApplicationBuilder
+if (app.Environment.IsDevelopment())
+{
+    app.AddConfigEndpoint(builder); // where Builder is of WebApplicationBuilder
+    ...
+}
 
 ...
 
