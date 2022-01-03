@@ -1,5 +1,7 @@
 # config-view
 
+![Publish Packages](https://github.com/aforloney/config-view/actions/workflows/dotnet.yml/badge.svg)
+
 ## Purpose
 
 An extension method for iterating and viewing the contents of your configuration as an endpoint.
@@ -14,7 +16,9 @@ The purpose of the repository was to be able to leverage easily viewing the cont
 
 ``` C#
 app.AddConfigEndpoint();
+
 ...
+
 services.AddConfigEndpoint();
 ```
 
