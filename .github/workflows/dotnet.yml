@@ -18,6 +18,8 @@ jobs:
       run: dotnet restore src/ConfigView.csproj
     - name: Build
       run: dotnet build src/ConfigView.csproj --configuration Release --no-restore
+    - name: Test
+      run: dotnet test tests/ConfigView.Tests.csproj
     - name: Publish ConfigView
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
