@@ -12,7 +12,7 @@ However, the extension method returned all of the contents as a `string` and req
 
 ## Usage
 
-The purpose of the repository was to be able to leverage easily viewing the contents of your configuration with the following lines,
+The purpose of the repository was to easily and quickly view the contents of your configuration with as little lines of code as possible. Currently, you can register either viewing _all_ confgiuration provider types or _JSON_ specific through extension methods. See below for more information:
 
 ### ASP.NET Core 5
 ``` C#
@@ -24,7 +24,7 @@ if (app.Environment.IsDevelopment())
 
 ...
 
-services.AddConfigEndpoint(); // or, services.AddJsonConfigEndpoint();
+services.AddConfigEndpoint(); // or, services.AddJsonConfigEndpoint() for JSON only
 ```
 
 ### ASP.NET Core 6
@@ -37,6 +37,7 @@ if (app.Environment.IsDevelopment())
 
 ...
 
-services.AddConfigEndpoint();   // or, services.AddJsonConfigEndpoint();
+services.AddConfigEndpoint();   // or, services.AddJsonConfigEndpoint() for JSON only
 ```
 
+Once added, the application will expose a new `GET` endpoint called `/config` to display the contents of the specific configuration provider that was used earlier when registering the service.
