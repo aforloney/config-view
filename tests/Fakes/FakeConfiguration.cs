@@ -24,11 +24,31 @@ namespace ConfigView.Tests.Fakes
         {
             var stream = new MemoryStream(Encoding.Default.GetBytes(json));
             var configRoot = new ConfigurationBuilder().AddJsonStream(stream).Build();
-            Sections = new List<ConfigurationSection>
-            {
-                new ConfigurationSection(configRoot, string.Empty)
-            };
+            ConfigureSections(configRoot);
             return configRoot;
         }
+
+        public IConfigurationRoot ConfigureRoot(IDictionary<string, string> initialData)
+        {
+            var configRoot = new ConfigurationBuilder().AddInMemoryCollection(initialData).Build();
+            ConfigureSections(configRoot);
+            return configRoot;
+        }
+
+        public IConfigurationRoot ConfigureRoot(string json, IDictionary<string, string> initialData)
+        {
+            var stream = new MemoryStream(Encoding.Default.GetBytes(json));
+            var configRoot = new ConfigurationBuilder()
+                                    .AddJsonStream(stream)
+                                    .AddInMemoryCollection(initialData).Build();
+            ConfigureSections(configRoot);
+            return configRoot;
+        }
+
+        private void ConfigureSections(IConfigurationRoot root) =>
+            Sections = new List<ConfigurationSection>
+            {
+                new ConfigurationSection(root, string.Empty)
+            };
     }
 }
