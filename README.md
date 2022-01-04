@@ -8,7 +8,7 @@ An extension method for iterating and viewing the contents of your configuration
 
 This was inspired off of an extenstion method on `IConfigurationRoot` exposed by the .NET team to _debug view_ the pieced together configuration values for the running application across all possible configured providers.
 
-However, the extension method returned the contents as a `string` and required manual work to expose the contents behind an endpoint. This aims to workaorund that.
+However, the extension method returned all of the contents as a `string` and required manual work to expose the contents behind an endpoint. This aims to workaorund that and provide the ability to specify configuration provider to view (e.g, JSON settings, memory, environment variables, etc).
 
 ## Usage
 
@@ -24,7 +24,7 @@ if (app.Environment.IsDevelopment())
 
 ...
 
-services.AddConfigEndpoint();
+services.AddConfigEndpoint(); // or, services.AddJsonConfigEndpoint();
 ```
 
 ### ASP.NET Core 6
@@ -37,12 +37,6 @@ if (app.Environment.IsDevelopment())
 
 ...
 
-services.AddConfigEndpoint();
+services.AddConfigEndpoint();   // or, services.AddJsonConfigEndpoint();
 ```
-
-
-## Notes
-
-This is not meant to be Production facing in it's current state and future support will only
-add the extension for non-Production environments.
 
