@@ -126,5 +126,79 @@ namespace ConfigView.Tests
             expected.OrderByDescending(e => e.Key)
                 .ShouldBeEquivalentTo(actual.OrderByDescending(act => act.Key));
         }
+
+        [Fact]
+        public void When_MemoryConfigSimpleConfigurationsSupplied_Then_Contents_Returned()
+        {
+            // Arrange
+            var initialData = new Dictionary<string, string> { { "KeyA", "ValueA" } };
+            Subject = new ConfigViewer(FakeConfiguration.ConfigureRoot(initialData));
+            var expected = new List<Config.ConfigView> {
+                new Config.ConfigView("KeyA", "KeyA", new Provider
+                {
+                    Source = "MemoryConfigurationProvider",
+                    Value = "ValueA"
+                }),
+             };
+
+            // Act
+            var actual = Subject.Get();
+
+            // Assert
+            expected.ShouldBeEquivalentTo(actual);
+        }
+
+        [Fact]
+        public void When_MemoryConfigMultipleConfigurationsSupplied_Then_Contents_Returned()
+        {
+            // Arrange
+            var initialData = new Dictionary<string, string> { { "KeyA", "ValueA" }, { "KeyB", "ValueB" } };
+            Subject = new ConfigViewer(FakeConfiguration.ConfigureRoot(initialData));
+            var expected = new List<Config.ConfigView> {
+                new Config.ConfigView("KeyA", "KeyA", new Provider
+                {
+                    Source = "MemoryConfigurationProvider",
+                    Value = "ValueA"
+                }),
+                new Config.ConfigView("KeyB", "KeyB", new Provider
+                {
+                    Source = "MemoryConfigurationProvider",
+                    Value = "ValueB"
+                }),
+             };
+
+            // Act
+            var actual = Subject.Get();
+
+            // Assert
+            expected.ShouldBeEquivalentTo(actual);
+        }
+
+        [Fact]
+        public void When_MemoryConfigAndJsonConfigurationsSupplied_Then_Contents_Returned()
+        {
+            // Arrange
+            var initialData = new Dictionary<string, string> { { "KeyA", "ValueA" } };
+            var jsonString = @"{""KeyB"":""ValueB""}";
+            Subject = new ConfigViewer(FakeConfiguration.ConfigureRoot(jsonString, initialData));
+            var expected = new List<Config.ConfigView> {
+                new Config.ConfigView("KeyA", "KeyA", new Provider
+                {
+                    Source = "MemoryConfigurationProvider",
+                    Value = "ValueA"
+                }),
+                new Config.ConfigView("KeyB", "KeyB", new Provider
+                {
+                    Source = "JsonStreamConfigurationProvider",
+                    Value = "ValueB"
+                }),
+             };
+
+            // Act
+            var actual = Subject.Get();
+
+            // Assert
+            expected.ShouldBeEquivalentTo(actual);
+        }
     }
 }
