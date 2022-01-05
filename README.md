@@ -21,10 +21,6 @@ if (app.Environment.IsDevelopment())
     app.AddConfigEndpoint();
     ...
 }
-
-...
-
-services.AddConfigEndpoint(); // or, services.AddJsonConfigEndpoint() for JSON only
 ```
 
 ### ASP.NET Core 6
@@ -34,10 +30,17 @@ if (app.Environment.IsDevelopment())
     app.AddConfigEndpoint(builder); // where Builder is of WebApplicationBuilder
     ...
 }
+```
 
-...
+And then register the appropriate type of configuration you wish to view,
 
-services.AddConfigEndpoint();   // or, services.AddJsonConfigEndpoint() for JSON only
+``` C#
+// for all type of providers,
+services.AddConfigEndpoint();
+// or JSON only,
+services.AddJsonConfigEndpoint();
+// or Environment Variables only,
+services.AddEnvironmentConfigEndpoint();
 ```
 
 Once added, the application will expose a new `GET` endpoint called `/config` to display the contents of the specific configuration provider that was used earlier when registering the service.
