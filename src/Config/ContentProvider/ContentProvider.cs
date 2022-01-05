@@ -1,7 +1,5 @@
-using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Configuration;
 
-[assembly: InternalsVisibleTo("ConfigView.Tests")]
 namespace ConfigView.Config.ContentProvider
 {
     internal class ContentProvider : IContentProvider
