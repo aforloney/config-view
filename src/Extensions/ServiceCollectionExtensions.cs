@@ -23,5 +23,11 @@ namespace ConfigView.Extensions
             services.AddTransient<IContentProvider, ContentProvider>();
             services.AddTransient<IConfigViewer, EnvironmentVariableConfigViewer>();
         }
+
+        public static void AddMemoryConfigEndpoint(this IServiceCollection services)
+        {
+            services.AddTransient<IContentProvider, ContentProvider>();
+            services.AddTransient<IConfigViewer, MemoryConfigViewer>();
+        }
     }
 }
