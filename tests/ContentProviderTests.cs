@@ -26,12 +26,12 @@ namespace ConfigView.Tests
         public void When_NoConfigurationAllRequested_Then_Empty()
         {
             // Arrange
-            // intetionally blank
+            // intentionally blank
             // Act
             var config = Subject.Get(new [] { typeof(IConfigurationProvider) });
 
             // Assert
-            Assert.Equal(config, Enumerable.Empty<Config.ConfigView>());
+            config.ShouldBeEmpty();
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace ConfigView.Tests
         }
 
         [Fact]
-        public void When_MemoryConfigAndJsonConfigurationsSuppliedAllRequested_Then_Contents_Returned()
+        public void When_MultipleConfigurationsSuppliedAllRequested_Then_Contents_Returned()
         {
             // Arrange
             var initialData = new Dictionary<string, string> { { "KeyA", "ValueA" } };

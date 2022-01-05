@@ -22,12 +22,31 @@ namespace ConfigView.Tests
         public void When_NoConfiguration_Then_Empty()
         {
             // Arrange
-            // intetionally blank
+            // intentionally blank
             // Act
             var config = Subject.Get();
 
             // Assert
             Assert.Equal(config, Enumerable.Empty<Config.ConfigView>());
+        }
+
+        [Fact]
+        public void When_NonJsonStreamConfigurationSupplied_Then_Empty()
+        {
+            // Arrange
+            var configView = new Config.ConfigView("Key", "Key", new Provider
+                {
+                    Source = "OtherProvider",
+                    Value = "Value1"
+                });
+            var expected = new List<Config.ConfigView> { configView };
+            FakeContentProvider.SetConfigs(expected);
+
+            // Act
+            var actual = Subject.Get();
+
+            // Assert
+            actual.ShouldBeEmpty();
         }
 
         [Fact]
