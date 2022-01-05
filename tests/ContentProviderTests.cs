@@ -1,24 +1,29 @@
 using Xunit;
 using ConfigView.Config;
 using ConfigView.Tests.Fakes;
-using System.Linq;
 using System.Collections.Generic;
 using Shouldly;
 using ConfigView.Config.ContentProvider;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Configuration.Memory;
+using System;
+using Microsoft.Extensions.Configuration.EnvironmentVariables;
+using System.Linq;
 
 namespace ConfigView.Tests
 {
-    public class ContentProviderTests
+    public class ContentProviderTests : IDisposable
     {
         private IContentProvider Subject { get; set; }
         private FakeConfiguration FakeConfiguration { get; }
 
+        private IDictionary<string, string> EnvironmentVariables { get; set; }
+
         public ContentProviderTests()
         {
             FakeConfiguration = new FakeConfiguration();
+            EnvironmentVariables = new Dictionary<string, string>();
             Subject = new ContentProvider(FakeConfiguration);
         }
 
@@ -128,6 +133,136 @@ namespace ConfigView.Tests
 
             // Assert
             expected.ShouldBeEquivalentTo(actual);
+        }
+
+        [Fact]
+        public void When_EnvironmentVariableNoPrefixSingleConfigurationsSupplied_Then_Contents_Returned()
+        {
+            // Arrange
+            EnvironmentVariables = new Dictionary<string, string> { { "MyEnvironmentVariableKeyA", "ValueA" } };
+            Subject = new ContentProvider(FakeConfiguration.ConfigureRootEnvironmentVariables(EnvironmentVariables));
+            var expected = new List<Config.ConfigView> {
+                new Config.ConfigView("MyEnvironmentVariableKeyA", "MyEnvironmentVariableKeyA", new Provider
+                {
+                    Source = "EnvironmentVariablesConfigurationProvider Prefix: ''",
+                    Value = "ValueA"
+                }),
+             };
+
+            // Act
+            var actual = Subject.Get(new[] { typeof(EnvironmentVariablesConfigurationProvider) });
+
+            // Assert
+            foreach (var exp in expected)
+            {
+                actual.Any(act => act.Key == exp.Key
+                               && act.Path == exp.Path
+                               && act.ProviderDetails.Source == exp.ProviderDetails.Source
+                               && act.ProviderDetails.Value == exp.ProviderDetails.Value).ShouldBeTrue();
+            }
+        }
+
+        [Fact]
+        public void When_EnvironmentVariableNoPrefixMultipleConfigurationsSupplied_Then_Contents_Returned()
+        {
+            // Arrange
+            EnvironmentVariables = new Dictionary<string, string> {
+                    { "MyEnvironmentVariableKeyA", "ValueA" },
+                    { "MyEnvironmentVariableKeyB", "ValueB" },
+                    };
+            Subject = new ContentProvider(FakeConfiguration.ConfigureRootEnvironmentVariables(EnvironmentVariables));
+            var expected = new List<Config.ConfigView> {
+                new Config.ConfigView("MyEnvironmentVariableKeyA", "MyEnvironmentVariableKeyA", new Provider
+                {
+                    Source = "EnvironmentVariablesConfigurationProvider Prefix: ''",
+                    Value = "ValueA"
+                }),
+                new Config.ConfigView("MyEnvironmentVariableKeyB", "MyEnvironmentVariableKeyB", new Provider
+                {
+                    Source = "EnvironmentVariablesConfigurationProvider Prefix: ''",
+                    Value = "ValueB"
+                })
+             };
+
+            // Act
+            var actual = Subject.Get(new[] { typeof(EnvironmentVariablesConfigurationProvider) });
+
+            // Assert
+            foreach (var exp in expected)
+            {
+                actual.Any(act => act.Key == exp.Key
+                               && act.Path == exp.Path
+                               && act.ProviderDetails.Source == exp.ProviderDetails.Source
+                               && act.ProviderDetails.Value == exp.ProviderDetails.Value).ShouldBeTrue();
+            }
+        }
+
+        [Fact]
+        public void When_EnvironmentVariableWithPrefixSingleConfigurationsSupplied_Then_Contents_Returned()
+        {
+            // Arrange
+            EnvironmentVariables = new Dictionary<string, string> { { "MyEnvironmentVariableKeyA", "ValueA" } };
+            Subject = new ContentProvider(FakeConfiguration.ConfigureRootEnvironmentVariables(EnvironmentVariables, "TEST:"));
+            var expected = new List<Config.ConfigView> {
+                new Config.ConfigView("MyEnvironmentVariableKeyA", "MyEnvironmentVariableKeyA", new Provider
+                {
+                    Source = "EnvironmentVariablesConfigurationProvider Prefix: 'TEST:'",
+                    Value = "ValueA"
+                }),
+             };
+
+            // Act
+            var actual = Subject.Get(new[] { typeof(EnvironmentVariablesConfigurationProvider) });
+
+            // Assert
+            foreach (var exp in expected)
+            {
+                actual.Any(act => act.Key == exp.Key
+                               && act.Path == exp.Path
+                               && act.ProviderDetails.Source == exp.ProviderDetails.Source
+                               && act.ProviderDetails.Value == exp.ProviderDetails.Value).ShouldBeTrue();
+            }
+        }
+
+        [Fact]
+        public void When_EnvironmentVariableWithPrefixMultipleConfigurationsSupplied_Then_Contents_Returned()
+        {
+            // Arrange
+            EnvironmentVariables = new Dictionary<string, string> {
+                    { "MyEnvironmentVariableKeyA", "ValueA" },
+                    { "MyEnvironmentVariableKeyB", "ValueB" },
+                    };
+            Subject = new ContentProvider(FakeConfiguration.ConfigureRootEnvironmentVariables(EnvironmentVariables, "TEST:"));
+            var expected = new List<Config.ConfigView> {
+                new Config.ConfigView("MyEnvironmentVariableKeyA", "MyEnvironmentVariableKeyA", new Provider
+                {
+                    Source = "EnvironmentVariablesConfigurationProvider Prefix: 'TEST:'",
+                    Value = "ValueA"
+                }),
+                new Config.ConfigView("MyEnvironmentVariableKeyB", "MyEnvironmentVariableKeyB", new Provider
+                {
+                    Source = "EnvironmentVariablesConfigurationProvider Prefix: 'TEST:'",
+                    Value = "ValueB"
+                })
+             };
+
+            // Act
+            var actual = Subject.Get(new[] { typeof(EnvironmentVariablesConfigurationProvider) });
+
+            // Assert
+            foreach (var exp in expected)
+            {
+                actual.Any(act => act.Key == exp.Key
+                               && act.Path == exp.Path
+                               && act.ProviderDetails.Source == exp.ProviderDetails.Source
+                               && act.ProviderDetails.Value == exp.ProviderDetails.Value).ShouldBeTrue();
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach (var key in EnvironmentVariables.Keys)
+                Environment.SetEnvironmentVariable(key, null);
         }
     }
 }
