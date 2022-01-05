@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -41,6 +43,20 @@ namespace ConfigView.Tests.Fakes
             var configRoot = new ConfigurationBuilder()
                                     .AddJsonStream(stream)
                                     .AddInMemoryCollection(initialData).Build();
+            ConfigureSections(configRoot);
+            return configRoot;
+        }
+
+        public IConfigurationRoot ConfigureRootEnvironmentVariables(IDictionary<string,string> environmentVariables,
+                string prefix = "")
+        {
+            foreach (var env in environmentVariables)
+            {
+                Environment.SetEnvironmentVariable($"{prefix}{env.Key}", env.Value);
+            }
+            var configRoot = new ConfigurationBuilder()
+                                    .AddEnvironmentVariables(prefix)
+                                    .Build();
             ConfigureSections(configRoot);
             return configRoot;
         }

@@ -17,5 +17,11 @@ namespace ConfigView.Extensions
             services.AddTransient<IContentProvider, ContentProvider>();
             services.AddTransient<IConfigViewer, JsonConfigViewer>();
         }
+
+        public static void AddEnvironmentConfigEndpoint(this IServiceCollection services)
+        {
+            services.AddTransient<IContentProvider, ContentProvider>();
+            services.AddTransient<IConfigViewer, EnvironmentVariableConfigViewer>();
+        }
     }
 }
