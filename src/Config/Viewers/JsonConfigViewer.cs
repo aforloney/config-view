@@ -3,7 +3,7 @@ using ConfigView.Config.ContentProvider;
 using Microsoft.Extensions.Configuration.Json;
 
 [assembly: InternalsVisibleTo("ConfigView.Tests")]
-namespace ConfigView.Config
+namespace ConfigView.Config.Viewers
 {
     internal class JsonConfigViewer : IConfigViewer
     {

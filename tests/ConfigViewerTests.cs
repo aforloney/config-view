@@ -1,9 +1,10 @@
 using Xunit;
-using ConfigView.Config;
+using ConfigView.Config.Viewers;
 using ConfigView.Tests.Fakes;
 using System.Linq;
 using System.Collections.Generic;
 using Shouldly;
+using ConfigView.Config;
 
 namespace ConfigView.Tests
 {

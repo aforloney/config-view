@@ -1,5 +1,5 @@
 using System.Text.Json;
-using ConfigView.Config;
+using ConfigView.Config.Viewers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;

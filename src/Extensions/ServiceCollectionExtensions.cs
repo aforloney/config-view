@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using ConfigView.Config;
+using ConfigView.Config.Viewers;
 using ConfigView.Config.ContentProvider;
 
 namespace ConfigView.Extensions
